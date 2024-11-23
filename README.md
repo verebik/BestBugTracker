@@ -12,4 +12,7 @@ A simple incident handling tool for web development subject.
 
 `Spring Data JPA`
 
+`PrimeFaces`
+
+
 ...

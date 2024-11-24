@@ -5,6 +5,7 @@ import org.BBT.data.repository.UserRepository;
 import org.BBT.service.UserService;
 import org.BBT.service.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +18,30 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Lazy //temp solution
     @Autowired
     private TicketManagementServiceImpl ticketService;
+
+
+    //TODO: Test function
+    /*@Autowired
+    private TicketRepository ticketRepository;
+
+    @Override
+    public UserEntity convertToEntity(UserDto dto) {
+        UserEntity entity = new UserEntity();
+        entity.setId(dto.getId());
+        entity.setUsername(dto.getUsername());
+        entity.setEmail(dto.getEmail());
+
+        if (dto.getTickets() != null) {
+            entity.setTickets(dto.getTickets().stream()
+                    .map(ticketDto -> new TicketEntity(ticketDto))
+                    .collect(Collectors.toList()));
+        }
+
+        return entity;
+    }*/
 
     @Override
     public UserEntity convertToEntity(UserDto dto) {

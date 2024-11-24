@@ -15,11 +15,11 @@ public class TicketEntity {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "bug_id", nullable = false)
+    @JoinColumn(name = "bug_id")
     private BugEntity bug;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private UserEntity assigneeUser;
 
     @Enumerated(EnumType.STRING)

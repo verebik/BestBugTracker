@@ -6,6 +6,7 @@ import org.BBT.service.BugService;
 import org.BBT.service.TicketManagementService;
 import org.BBT.service.dto.BugDto;
 import org.BBT.service.dto.TicketDto;
+import org.BBT.service.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,23 +18,36 @@ import java.util.List;
 public class TicketController {
 
     @Autowired
-    TicketManagementService ticketManagementService;
-    @Autowired
-    BugService bugService;
+    private TicketManagementService ticketManagementService;
 
+    @Autowired
+    private BugService bugService;
 
     @GetMapping("/test")
-    public String test() {return "Ez egy teszt!";}
+    public String test() {
+        return "Ez egy teszt!";
+    }
 
-    BugDto newBug = new BugDto(null,"Valami","Amerika");
-    BugDto actualBug = bugService.createBug(newBug);
+    @PostMapping("/createTicket")
+    public TicketDto createTicket() {
+        // Létrehozás a metódusban
+        UserDto newUser = new UserDto(null, "KisS Pista", "kispista@gmail.com");
+        BugDto newBug = new BugDto(null, "Valami", "Amerika");
 
-    TicketDto newTicket = new TicketDto();
-    TicketDto addedTicket = ticketManagementService.addTicket(newTicket);
+        // Bug létrehozása
+        BugDto actualBug = bugService.createBug(newBug);
 
-    /*TicketDto updatedTicket = new TicketDto(addedTicket.getId(), "Jane Smith", Priority.MEDIUM, Status.CLOSED, addedTicket.getCreatedAt(), LocalDateTime.now());
-    ticketManagementService.updateTicket(updatedTicket);*/
+        // Ticket létrehozása
+        TicketDto newTicket = new TicketDto(null, actualBug, newUser, Priority.HIGH, Status.OPEN, LocalDateTime.now(), null);
 
-    List<TicketDto> allTickets = ticketManagementService.getAllTickets();
+        // Ticket hozzáadása
+        TicketDto addedTicket = ticketManagementService.addTicket(newTicket);
 
+        return addedTicket;
+    }
+
+    @GetMapping("/allTickets")
+    public List<TicketDto> getAllTickets() {
+        return ticketManagementService.getAllTickets();
+    }
 }

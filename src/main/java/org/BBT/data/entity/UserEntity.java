@@ -13,7 +13,7 @@ public class UserEntity {
     private String username;
     private String email;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "assigneeUser")
     private List<TicketEntity> tickets;
 
     public UserEntity() {

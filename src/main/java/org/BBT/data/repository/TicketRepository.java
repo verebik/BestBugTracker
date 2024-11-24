@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface TicketRepository extends JpaRepository<TicketEntity, Long> {
-    List<TicketEntity> findByAsigneeUser(UserEntity user);
+    List<TicketEntity> findByAssigneeUser(UserEntity user);
     List<TicketEntity> findByPriority(Priority priority);
     List<TicketEntity> findByStatus(Status status);
     List<TicketEntity> findByPriorityAndStatus(Priority priority, Status status);

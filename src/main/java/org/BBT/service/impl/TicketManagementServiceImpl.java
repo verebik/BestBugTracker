@@ -108,10 +108,10 @@ public class TicketManagementServiceImpl implements TicketManagementService {
     }
 
     @Override
-    public void deleteTicket(String ticketId) {
+    public void deleteTicket(String ticketId) { //Not string, need to rework
         try {
-            Long id = Long.parseLong(ticketId);  // Ticket ID konvertálása Long-ra
-            ticketRepository.deleteById(id);  // Törlés
+            Long id = Long.parseLong(ticketId);
+            ticketRepository.deleteById(id);
         } catch (NumberFormatException e) {
             //TODO: catch error
         }

@@ -1,9 +1,15 @@
 package org.BBT.service.impl;
 
+import org.BBT.data.entity.BugEntity;
 import org.BBT.data.entity.TicketEntity;
+import org.BBT.data.entity.UserEntity;
 import org.BBT.data.repository.TicketRepository;
 import org.BBT.service.TicketManagementService;
 import org.BBT.service.dto.TicketDto;
+import org.BBT.service.dto.BugDto;
+import org.BBT.service.dto.UserDto;
+import org.BBT.service.BugService;
+import org.BBT.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +23,29 @@ public class TicketManagementServiceImpl implements TicketManagementService {
     @Autowired
     TicketRepository ticketRepository;
 
+    @Autowired
+    BugService bugService;
+
+    @Autowired
+    UserService userService;
+
     // TicketDto konvertálás TicketEntity-be
-    private TicketEntity convertToEntity(TicketDto dto) {
+    public TicketEntity convertToEntity(TicketDto dto) {
         TicketEntity entity = new TicketEntity();
-        entity.setAssigneeUser(dto.getAssigneeUser());
+        entity.setId(dto.getId());
+
+        // AssigneeUser konvertálása UserDto -> UserEntity
+        if (dto.getAssigneeUser() != null) {
+            UserEntity userEntity = userService.convertToEntity(dto.getAssigneeUser());
+            entity.setAssigneeUser(userEntity);
+        }
+
+        // Bug konvertálása BugDto -> BugEntity
+        if (dto.getBug() != null) {
+            BugEntity bugEntity = bugService.convertToEntity(dto.getBug());
+            entity.setBug(bugEntity);
+        }
+
         entity.setPriority(dto.getPriority());
         entity.setStatus(dto.getStatus());
         entity.setCreatedAt(dto.getCreatedAt());
@@ -29,15 +54,19 @@ public class TicketManagementServiceImpl implements TicketManagementService {
     }
 
     // TicketEntity konvertálás TicketDto-ra
-    private TicketDto convertToDto(TicketEntity entity) {
+    public TicketDto convertToDto(TicketEntity entity) {
+        BugDto bugDto = bugService.convertToDto(entity.getBug());
+        UserDto userDto = userService.convertToDto(entity.getAssigneeUser());
+
         return new TicketDto(
                 entity.getId(),
-                entity.getBug(),
-                entity.getAssigneeUser(),
+                bugDto,
+                userDto,
                 entity.getPriority(),
                 entity.getStatus(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
+
         );
     }
 
@@ -53,10 +82,11 @@ public class TicketManagementServiceImpl implements TicketManagementService {
         Optional<TicketEntity> optionalTicket = ticketRepository.findById(ticketDto.getId());
         if (optionalTicket.isPresent()) {
             TicketEntity ticketEntity = optionalTicket.get();
-            ticketEntity.setAssigneeUser(ticketDto.getAssigneeUser());
+            ticketEntity.setAssigneeUser(convertToEntity(ticketDto).getAssigneeUser());
             ticketEntity.setPriority(ticketDto.getPriority());
             ticketEntity.setStatus(ticketDto.getStatus());
             ticketEntity.setUpdatedAt(ticketDto.getUpdatedAt());
+
             ticketEntity = ticketRepository.save(ticketEntity);
             return convertToDto(ticketEntity);
         } else {
@@ -66,8 +96,7 @@ public class TicketManagementServiceImpl implements TicketManagementService {
 
     @Override
     public TicketDto getTicket(String ticketId) {
-        Optional<TicketEntity> ticketEntity = ticketRepository.findById(Long.parseLong(ticketId));
-        return ticketEntity.map(this::convertToDto).orElse(null);
+        return null; //TODO: FIND BY NAME NOT ID
     }
 
     @Override
@@ -80,6 +109,11 @@ public class TicketManagementServiceImpl implements TicketManagementService {
 
     @Override
     public void deleteTicket(String ticketId) {
-        ticketRepository.deleteById(Long.parseLong(ticketId));
+        try {
+            Long id = Long.parseLong(ticketId);  // Ticket ID konvertálása Long-ra
+            ticketRepository.deleteById(id);  // Törlés
+        } catch (NumberFormatException e) {
+            //TODO: catch error
+        }
     }
 }

@@ -19,6 +19,10 @@ public class BugEntity {
     public BugEntity() {
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public BugEntity(String title, String description) {}
 
     public Long getId() {

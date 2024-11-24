@@ -1,6 +1,7 @@
 package org.BBT.data.repository;
 
 import org.BBT.data.entity.TicketEntity;
+import org.BBT.data.entity.UserEntity;
 import org.BBT.data.entity.enums.Priority;
 import org.BBT.data.entity.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface TicketRepository extends JpaRepository<TicketEntity, Long> {
-    List<TicketEntity> findByAssignee(String assignee);
+    List<TicketEntity> findByAsigneeUser(UserEntity user);
     List<TicketEntity> findByPriority(Priority priority);
     List<TicketEntity> findByStatus(Status status);
     List<TicketEntity> findByPriorityAndStatus(Priority priority, Status status);

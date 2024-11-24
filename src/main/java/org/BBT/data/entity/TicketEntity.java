@@ -13,28 +13,42 @@ public class TicketEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne
     @JoinColumn(name = "bug_id", nullable = false)
     private BugEntity bug;
-    private String assignee;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity assigneeUser;
+
     @Enumerated(EnumType.STRING)
     private Priority priority;
     @Enumerated(EnumType.STRING)
     private Status status;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public TicketEntity() {
     }
 
-    public TicketEntity(Long id, BugEntity bug, String assignee, Priority priority, Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public TicketEntity(Long id, BugEntity bug, UserEntity assigneeUser, Priority priority, Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.bug = bug;
-        this.assignee = assignee;
+        this.assigneeUser = assigneeUser;
         this.priority = priority;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public UserEntity getAssigneeUser() {
+        return assigneeUser;
+    }
+
+    public void setAssigneeUser(UserEntity assigneeUser) {
+        this.assigneeUser = assigneeUser;
     }
 
     public BugEntity getBug() {

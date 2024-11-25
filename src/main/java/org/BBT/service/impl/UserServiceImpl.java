@@ -1,9 +1,12 @@
 package org.BBT.service.impl;
 
+import org.BBT.data.entity.TicketEntity;
 import org.BBT.data.entity.UserEntity;
+import org.BBT.data.repository.TicketRepository;
 import org.BBT.data.repository.UserRepository;
 import org.BBT.service.UserService;
 import org.BBT.service.dto.UserDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -22,26 +25,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TicketManagementServiceImpl ticketService;
 
+    @Autowired
+    ModelMapper mapper;
 
     //TODO: Test function
     /*@Autowired
-    private TicketRepository ticketRepository;
-
-    @Override
-    public UserEntity convertToEntity(UserDto dto) {
-        UserEntity entity = new UserEntity();
-        entity.setId(dto.getId());
-        entity.setUsername(dto.getUsername());
-        entity.setEmail(dto.getEmail());
-
-        if (dto.getTickets() != null) {
-            entity.setTickets(dto.getTickets().stream()
-                    .map(ticketDto -> new TicketEntity(ticketDto))
-                    .collect(Collectors.toList()));
-        }
-
-        return entity;
-    }*/
+    private TicketRepository ticketRepository;*/
 
     @Override
     public UserEntity convertToEntity(UserDto dto) {

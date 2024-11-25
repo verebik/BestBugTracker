@@ -30,17 +30,13 @@ public class TicketController {
 
     @PostMapping("/createTicket")
     public TicketDto createTicket() {
-        // Létrehozás a metódusban
         UserDto newUser = new UserDto(null, "KisS Pista", "kispista@gmail.com");
         BugDto newBug = new BugDto(null, "Valami", "Amerika");
 
-        // Bug létrehozása
         BugDto actualBug = bugService.createBug(newBug);
 
-        // Ticket létrehozása
         TicketDto newTicket = new TicketDto(null, actualBug, newUser, Priority.HIGH, Status.OPEN, LocalDateTime.now(), null);
 
-        // Ticket hozzáadása
         TicketDto addedTicket = ticketManagementService.addTicket(newTicket);
 
         return addedTicket;

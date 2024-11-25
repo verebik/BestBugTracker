@@ -1,14 +1,11 @@
 package org.BBT.service.impl;
 
-import org.BBT.data.entity.TicketEntity;
 import org.BBT.data.entity.UserEntity;
-import org.BBT.data.repository.TicketRepository;
 import org.BBT.data.repository.UserRepository;
 import org.BBT.service.UserService;
 import org.BBT.service.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,40 +18,17 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Lazy //temp solution
     @Autowired
-    private TicketManagementServiceImpl ticketService;
-
-    @Autowired
-    ModelMapper mapper;
-
-    //TODO: Test function
-    /*@Autowired
-    private TicketRepository ticketRepository;*/
+    private ModelMapper mapper;
 
     @Override
     public UserEntity convertToEntity(UserDto dto) {
-        UserEntity entity = new UserEntity();
-        entity.setId(dto.getId());
-        entity.setUsername(dto.getUsername());
-        entity.setEmail(dto.getEmail());
-
-        if (dto.getTickets() != null) {
-            entity.setTickets(dto.getTickets().stream()
-                    .map(ticketDto -> ticketService.convertToEntity(ticketDto))
-                    .collect(Collectors.toList()));
-        }
-
-        return entity;
+        return mapper.map(dto, UserEntity.class);
     }
 
     @Override
     public UserDto convertToDto(UserEntity entity) {
-        return new UserDto(
-                entity.getId(),
-                entity.getUsername(),
-                entity.getEmail()
-        );
+        return mapper.map(entity, UserDto.class);
     }
 
     @Override
@@ -63,7 +37,7 @@ public class UserServiceImpl implements UserService {
         if (optionalUser.isPresent()) {
             return convertToDto(optionalUser.get());
         } else {
-            throw new RuntimeException("User not found with id: " + id); // Hiba kezelése
+            throw new RuntimeException("User not found with id: " + id);
         }
     }
 
@@ -77,6 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto save(UserDto userDto) {
+        // DTO -> Entity
         UserEntity userEntity = convertToEntity(userDto);
         userEntity = userRepository.save(userEntity);
         return convertToDto(userEntity);
@@ -87,4 +62,3 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 }
-

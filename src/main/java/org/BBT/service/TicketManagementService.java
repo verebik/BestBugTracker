@@ -7,7 +7,7 @@ import java.util.List;
 public interface TicketManagementService {
     TicketDto addTicket(TicketDto ticket);
     TicketDto updateTicket(TicketDto ticket);
-    TicketDto getTicket(String ticketId);
+    TicketDto getTicket(long ticketId);
     List<TicketDto> getAllTickets();
-    void deleteTicket(String ticketId);
+    void deleteTicket(long ticketId);
 }

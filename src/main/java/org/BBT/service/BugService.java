@@ -12,7 +12,4 @@ public interface BugService {
     List<BugDto> getBugs();
     BugDto getBugById(Long id);
 
-    BugEntity convertToEntity(BugDto bug);
-
-    BugDto convertToDto(BugEntity bug);
 }

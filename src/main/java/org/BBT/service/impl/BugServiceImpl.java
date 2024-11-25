@@ -4,6 +4,7 @@ import org.BBT.data.entity.BugEntity;
 import org.BBT.data.repository.BugRepository;
 import org.BBT.service.BugService;
 import org.BBT.service.dto.BugDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,25 +18,17 @@ public class BugServiceImpl implements BugService {
     @Autowired
     private BugRepository bugRepository;
 
-    // BugDto konvertálása BugEntity-be
-    public BugEntity convertToEntity(BugDto dto) {
-        BugEntity entity = new BugEntity();
-        if (dto.getId() != null) {
-            entity.setId(dto.getId());
-        }
-        entity.setTitle(dto.getTitle());
-        entity.setDescription(dto.getDescription());
-        return entity;
+    @Autowired
+    private ModelMapper modelMapper;
+
+    // BugDto konvertálása BugEntity-be ModelMapper segítségével
+    private BugEntity convertToEntity(BugDto dto) {
+        return modelMapper.map(dto, BugEntity.class);
     }
 
-
-    // BugEntity konvertálása BugDto-ra
-    public BugDto convertToDto(BugEntity entity) {
-        return new BugDto(
-                entity.getId(),
-                entity.getTitle(),
-                entity.getDescription()
-        );
+    // BugEntity konvertálása BugDto-ra ModelMapper segítségével
+    private BugDto convertToDto(BugEntity entity) {
+        return modelMapper.map(entity, BugDto.class);
     }
 
     @Override
@@ -50,8 +43,7 @@ public class BugServiceImpl implements BugService {
         Optional<BugEntity> optionalBug = bugRepository.findById(bugDto.getId());
         if (optionalBug.isPresent()) {
             BugEntity bugEntity = optionalBug.get();
-            bugEntity.setTitle(bugDto.getTitle());
-            bugEntity.setDescription(bugDto.getDescription());
+            modelMapper.map(bugDto, bugEntity); // Frissítés ModelMapper-rel
             bugEntity = bugRepository.save(bugEntity);
             return convertToDto(bugEntity);
         } else {
@@ -75,12 +67,6 @@ public class BugServiceImpl implements BugService {
     @Override
     public BugDto getBugById(Long id) {
         Optional<BugEntity> bugEntityOptional = bugRepository.findById(id);
-        if (bugEntityOptional.isPresent()) {
-            BugEntity bugEntity = bugEntityOptional.get();
-            return convertToDto(bugEntity);
-        } else {
-            return null;
-        }
+        return bugEntityOptional.map(this::convertToDto).orElse(null);
     }
-
 }

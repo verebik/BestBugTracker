@@ -10,8 +10,4 @@ public interface UserService {
     List<UserDto> findAll();
     UserDto save(UserDto userDto);
     void deleteById(long id);
-
-    UserEntity convertToEntity(UserDto assigneeUser);
-
-    UserDto convertToDto(UserEntity assigneeUser);
 }

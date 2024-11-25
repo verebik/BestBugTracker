@@ -21,12 +21,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper mapper;
 
-    @Override
     public UserEntity convertToEntity(UserDto dto) {
         return mapper.map(dto, UserEntity.class);
     }
 
-    @Override
     public UserDto convertToDto(UserEntity entity) {
         return mapper.map(entity, UserDto.class);
     }

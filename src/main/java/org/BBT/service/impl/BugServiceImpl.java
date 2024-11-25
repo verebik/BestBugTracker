@@ -21,12 +21,10 @@ public class BugServiceImpl implements BugService {
     @Autowired
     private ModelMapper modelMapper;
 
-    // BugDto konvertálása BugEntity-be ModelMapper segítségével
     private BugEntity convertToEntity(BugDto dto) {
         return modelMapper.map(dto, BugEntity.class);
     }
 
-    // BugEntity konvertálása BugDto-ra ModelMapper segítségével
     private BugDto convertToDto(BugEntity entity) {
         return modelMapper.map(entity, BugDto.class);
     }

@@ -5,21 +5,22 @@ import org.BBT.data.entity.enums.Status;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 
 @Entity
-@Table(name = "Tickets")
+@Table(name = "tickets")
 public class TicketEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "bug_id")
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "bug_id") //@JoinColumn(name = "bug_id", referencedColumnName = "id")
     private BugEntity bug;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id") //
     private UserEntity assigneeUser;
 
     @Enumerated(EnumType.STRING)
@@ -97,5 +98,18 @@ public class TicketEntity {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TicketEntity that = (TicketEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(bug, that.bug) && Objects.equals(assigneeUser, that.assigneeUser) && priority == that.priority && status == that.status && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, bug, assigneeUser, priority, status, createdAt, updatedAt);
     }
 }

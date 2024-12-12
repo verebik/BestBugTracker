@@ -7,6 +7,7 @@ public class BugDto {
     private String title;
     private String description;
 
+
     public BugDto() {
     }
 

@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ public class BugServiceImpl implements BugService {
     }
 
     @Override
+    @Transactional
     public BugDto createBug(BugDto bugDto) {
         BugEntity bugEntity = convertToEntity(bugDto);
         bugEntity = bugRepository.save(bugEntity);

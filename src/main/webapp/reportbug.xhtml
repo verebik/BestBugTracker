@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Report Bug</title>
+    <h:outputStylesheet name="styles.css"/>
+</h:head>
+<h:body>
+    <h:form id="form">
+        <h:panelGrid columns="2" cellpadding="5">
+            <h:outputLabel for="title" value="Title:" />
+            <p:inputText id="title" value="#{bugController.bugDto.title}" required="true" />
+
+            <h:outputLabel for="description" value="Description:" />
+            <p:inputTextarea id="description" value="#{bugController.bugDto.description}" required="true" />
+
+            <f:facet name="footer">
+                <p:commandButton value="Submit" action="#{bugController.addBugAndCreateTicket}" update=":form:messages" />
+            </f:facet>
+        </h:panelGrid>
+        <p:messages id="messages" showDetail="true" autoUpdate="true" />
+    </h:form>
+</h:body>
+</html>

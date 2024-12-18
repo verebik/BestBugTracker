@@ -1,6 +1,5 @@
 package org.BBT;
 
-//import org.BBT.crud;
 import javax.faces.webapp.FacesServlet;
 import javax.servlet.Servlet;
 
@@ -15,9 +14,11 @@ import com.sun.faces.config.ConfigureListener;
 @SpringBootApplication
 public class BBTApplication extends SpringBootServletInitializer {
 
-    public static void main(String[] args) {SpringApplication.run(BBTApplication.class, args);}
+    public static void main(String[] args) {
+        SpringApplication.run(BBTApplication.class, args);
+    }
 
-    //Faces serverlet setup for Spring Boot.
+    // Faces servlet setup for Spring Boot.
     @Bean
     public FacesServlet facesServlet() {
         return new FacesServlet();
@@ -25,12 +26,12 @@ public class BBTApplication extends SpringBootServletInitializer {
 
     @Bean
     public ServletRegistrationBean<Servlet> facesServletRegistration() {
-        ServletRegistrationBean<Servlet> registration = new ServletRegistrationBean<Servlet>(facesServlet(), "*.jsf");
+        ServletRegistrationBean<Servlet> registration = new ServletRegistrationBean<>(facesServlet(), "*.xhtml");
         return registration;
     }
 
     @Bean
     public ServletListenerRegistrationBean<ConfigureListener> jsfConfigureListener() {
-        return new ServletListenerRegistrationBean<ConfigureListener>(new ConfigureListener());
+        return new ServletListenerRegistrationBean<>(new ConfigureListener());
     }
 }

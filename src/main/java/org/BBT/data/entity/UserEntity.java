@@ -16,7 +16,7 @@ public class UserEntity {
     @Column(unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "assigneeUser", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "assigneeUser", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private List<TicketEntity> tickets;
 
     public UserEntity() {

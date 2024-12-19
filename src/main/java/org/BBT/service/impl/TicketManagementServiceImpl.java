@@ -41,18 +41,11 @@ public class TicketManagementServiceImpl implements TicketManagementService {
     }
 
     @Override
+    @Transactional
     public TicketDto updateTicket(TicketDto ticketDto) {
-        Optional<TicketEntity> optionalTicket = ticketRepository.findById(ticketDto.getId());
-        if (optionalTicket.isPresent()) {
-            TicketEntity ticketEntity = optionalTicket.get();
-
-            modelMapper.map(ticketDto, ticketEntity);
-            ticketEntity = ticketRepository.save(ticketEntity);
-
-            return convertToDto(ticketEntity);
-        } else {
-            return null;
-        }
+        TicketEntity ticketEntity = convertToEntity(ticketDto);
+        ticketEntity = ticketRepository.save(ticketEntity);
+        return convertToDto(ticketEntity);
     }
 
     @Override

@@ -16,6 +16,8 @@ public class TicketDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private Boolean editable = false;
+
     public TicketDto() {
     }
 
@@ -40,6 +42,14 @@ public class TicketDto {
     @Override
     public int hashCode() {
         return Objects.hash(id, bug, assigneeUser, priority, status, createdAt, updatedAt);
+    }
+
+    public Boolean getEditable() {
+        return editable;
+    }
+
+    public void setEditable(Boolean editable) {
+        this.editable = editable;
     }
 
     public Long getId() {

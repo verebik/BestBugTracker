@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Tickets</title>
+    <h:outputStylesheet name="styles.css"/>
+</h:head>
+<h:body>
+    <h:form>
+        <!-- Header with buttons: Refresh, Create, Modify -->
+        <h:panelGrid columns="3" styleClass="header-panel">
+            <p:commandButton value="Refresh" action="#{ticketUIController.refreshTicketList}" update="ticketTable" />
+            <p:commandButton value="Create" action="reportbug.xhtml" />
+            <p:commandButton value="Modify" action="modifyticket.xhtml" />
+        </h:panelGrid>
+
+        <!-- Ticket list (table) -->
+        <p:dataTable id="ticketTable" value="#{ticketUIController.filteredTicketDtoList}" var="ticket" styleClass="data-table">
+            <p:column headerText="ID">
+                #{ticket.id}
+            </p:column>
+            <p:column headerText="Title">
+                #{ticket.bug.title}
+            </p:column>
+            <p:column headerText="Assignee">
+                #{ticket.assigneeUser.username}
+            </p:column>
+            <p:column headerText="Priority">
+                <!-- Check if priority is null and show 'None' -->
+                #{ticket.priority == null ? 'None' : ticket.priority}
+            </p:column>
+            <p:column headerText="Status">
+                <!-- Check if status is null and show 'New' -->
+                #{ticket.status == null ? 'New' : ticket.status}
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</h:body>
+</html>
